@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Professeur — suivi TP BTS MS</title>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="icon" href="img/logo-artaud.png" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="img/logo-artaud.png" alt="Lycée Antonin Artaud" />
+      <div>
+        <strong>Espace professeur</strong>
+        <em>Positionner 0–3, la note se calcule</em>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Élève</a>
+      <a href="methode.html">Méthode</a>
+      <a class="on" href="prof.html">Professeur</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="kicker">Saisie</div>
+      <h1>Vous cochez des indicateurs.<br>Le site fait la note.</h1>
+      <p class="lede">Les évaluations de la démo sont déjà en ligne. Ce que vous enregistrez ici reste dans <strong>ce navigateur</strong> jusqu’à export. Pour que les élèves le voient sur le site public : exporter, remplacer <code>js/promo.js</code>, double-cliquer <code>publier.bat</code>.</p>
+      <div class="toolbar">
+        <button class="btn small" id="add">Ajouter un élève</button>
+        <button class="btn ghost small" id="export">Exporter JSON</button>
+        <label class="btn ghost small" style="margin:0">Importer<input id="import" type="file" accept="application/json" hidden></label>
+        <button class="btn ghost small" id="reset">Effacer le local</button>
+      </div>
+    </section>
+
+    <h2 class="section-title">Évaluer un TP</h2>
+    <div class="split">
+      <div>
+        <p class="muted" style="margin:0 0 0.4rem">Élèves</p>
+        <div class="list" id="eleves"></div>
+        <p class="muted" style="margin:1rem 0 0.4rem">TP</p>
+        <div class="list" id="tps"></div>
+      </div>
+      <div class="card" id="form"></div>
+    </div>
+
+    <h2 class="section-title">Vue de classe</h2>
+    <div class="card" style="padding:0.4rem 0.6rem 0.8rem; overflow:auto">
+      <table>
+        <thead></thead>
+        <tbody id="classe"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    Ne publiez pas de noms-prénoms complets sur GitHub Pages. Un code (LEA24) suffit.
+  </footer>
+
+  <script src="js/referentiel.js"></script>
+  <script src="js/tps.js"></script>
+  <script src="js/promo.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/prof.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Suivi des TP — BTS MS</title>
+  <meta name="description" content="Notes de TP tirées des compétences du BTS Maintenance des systèmes, option SP." />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="icon" href="img/logo-artaud.png" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="img/logo-artaud.png" alt="Lycée Antonin Artaud" />
+      <div>
+        <strong>BTS MS · option SP</strong>
+        <em>Suivi des TP et des compétences</em>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="on" href="index.html">Élève</a>
+      <a href="methode.html">Méthode</a>
+      <a href="prof.html">Professeur</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="gate" class="hero">
+      <div class="kicker">Espace élève</div>
+      <h1>Votre niveau,<br>pas seulement une note.</h1>
+      <p class="lede">Chaque TP est noté à partir des indicateurs officiels (0 à 3). Vous voyez la note, le niveau de chaque compétence, et comment ça évolue.</p>
+      <div class="login">
+        <label>Code élève
+          <input id="code" type="text" autocomplete="off" spellcheck="false" placeholder="LEA24" />
+        </label>
+        <button class="btn" id="go">Voir mon suivi</button>
+      </div>
+      <p class="notice"><strong>Démo publique.</strong> Aucun compte. Les prénoms ci-dessous sont fictifs, pour montrer le fonctionnement. En classe, vous recevez un code personnel.</p>
+      <div class="codes">
+        <button type="button" data-demo="LEA24">LEA24 · Léa</button>
+        <button type="button" data-demo="YAN24">YAN24 · Yanis</button>
+        <button type="button" data-demo="INE24">INE24 · Inès</button>
+        <button type="button" data-demo="KAR24">KAR24 · Karim</button>
+      </div>
+    </section>
+
+    <div id="dash" hidden>
+      <section class="hero">
+        <div class="kicker" id="who-meta"></div>
+        <h1>Bonjour <span id="who"></span>.</h1>
+        <p class="lede">Les niveaux 0–3 viennent de la grille nationale du BTS MS. La note /20 est calculée à partir de ces niveaux — elle n’est pas saisie à part.</p>
+        <div class="toolbar"><button class="btn ghost small" id="out">Changer d’élève</button></div>
+      </section>
+
+      <div class="stats">
+        <div class="stat"><b id="stat-note">—</b><span>moyenne des TP</span></div>
+        <div class="stat"><b id="stat-niv">—</b><span>niveau actuel</span></div>
+        <div class="stat"><b id="stat-ntp">—</b><span>TP évalués</span></div>
+      </div>
+
+      <h2 class="section-title">Compétences</h2>
+      <div class="layout">
+        <div class="radar-wrap">
+          <svg id="radar" viewBox="0 0 320 320" role="img" aria-label="Radar des compétences"></svg>
+        </div>
+        <div class="comp-grid" id="comps"></div>
+      </div>
+
+      <h2 class="section-title">Notes de TP</h2>
+      <div class="card" style="padding:0.4rem 0.6rem 0.8rem">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>TP</th><th>Compétences</th><th>Niveau</th><th>Note</th></tr>
+          </thead>
+          <tbody id="tps"></tbody>
+        </table>
+      </div>
+
+      <div id="detail" class="card" hidden style="margin-top:1rem"></div>
+    </div>
+  </main>
+
+  <footer>
+    Lycée Antonin Artaud · BTS Maintenance des systèmes. Les grilles d’indicateurs sont celles du guide d’accompagnement pédagogique.
+  </footer>
+
+  <script src="js/referentiel.js"></script>
+  <script src="js/tps.js"></script>
+  <script src="js/promo.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/eleve.js"></script>
+</body>
+</html>

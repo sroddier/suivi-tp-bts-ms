@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Méthode de notation — BTS MS</title>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="icon" href="img/logo-artaud.png" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="img/logo-artaud.png" alt="Lycée Antonin Artaud" />
+      <div>
+        <strong>BTS MS · option SP</strong>
+        <em>Comment la note est tirée des compétences</em>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Élève</a>
+      <a class="on" href="methode.html">Méthode</a>
+      <a href="prof.html">Professeur</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="kicker">Stratégie retenue</div>
+      <h1>On ne note pas le TP.<br>On positionne des compétences.</h1>
+      <p class="lede">La grille nationale du BTS MS est en 0–3 (Subit, Exécute, Maîtrise, Expert). La note /20 n’est qu’une traduction, pour le bulletin et l’élève. Le suivi utile, c’est le niveau par compétence.</p>
+    </section>
+
+    <h2 class="section-title">Les quatre niveaux</h2>
+    <div class="levels">
+      <div class="n0"><b>0 · Subit</b><span>Tâche non menée, ou sans méthode.</span></div>
+      <div class="n1"><b>1 · Exécute</b><span>Réalise avec aide, manques importants.</span></div>
+      <div class="n2"><b>2 · Maîtrise</b><span>Autonome, écarts mineurs.</span></div>
+      <div class="n3"><b>3 · Expert</b><span>Complet, cohérent, traçable.</span></div>
+    </div>
+
+    <h2 class="section-title">De l’indicateur à la note du TP</h2>
+    <div class="card">
+      <ol class="steps">
+        <li>Chaque TP n’observe <strong>que les indicateurs visés</strong> (pas toute la grille). Les autres restent « non observés » : ils ne baissent pas la note.</li>
+        <li>Pour chaque compétence (C11, C12…), on fait la <strong>moyenne de ses indicateurs observés</strong>. C13 (4 indicateurs) pèse autant que C11 (10 indicateurs).</li>
+        <li>Le niveau du TP = moyenne de ces compétences observées.</li>
+        <li>Traduction en /20, non linéaire, pour coller au métier :</li>
+      </ol>
+      <p class="formula">0 → 0/20 &nbsp;·&nbsp; 1 → 8/20 &nbsp;·&nbsp; 2 → 14/20 &nbsp;·&nbsp; 3 → 20/20</p>
+      <p class="lede">Entre deux niveaux, on interpole. Un TP « Exécute » (1,0) vaut 8, pas 6,7. Un TP « Maîtrise » (2,0) vaut 14.</p>
+      <p class="notice"><strong>Plafond sécurité.</strong> Si un indicateur QHSE observé (dépose, réparation, consignation, prévention) est à 0, la note du TP est plafonnée à 8/20. On ne « compense » pas un geste dangereux par un bon diagnostic.</p>
+    </div>
+
+    <h2 class="section-title">Le niveau de compétence dans le temps</h2>
+    <div class="grid2">
+      <article class="card">
+        <div class="kicker">Retenu ici</div>
+        <h2>Dernières situations, plus récentes plus lourdes</h2>
+        <p class="lede">Pour C11, C12, etc., on prend les <strong>3 dernières observations</strong>, pondérées 1–2–3. C’est l’esprit du CCF : on positionne l’élève sur des situations significatives, on ne noie pas les progrès dans les premiers TP de septembre.</p>
+      </article>
+      <article class="card">
+        <div class="kicker">Écarté</div>
+        <h2>Moyenne de toute l’année</h2>
+        <p class="lede">Simple, mais injuste : un 0 de rentrée bloque le niveau même si l’élève maîtrise en mars. On affiche quand même l’historique (courbe) pour que l’élève voie d’où il vient.</p>
+      </article>
+    </div>
+
+    <h2 class="section-title">Autres stratégies possibles</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Stratégie</th><th>Intérêt</th><th>Limite</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Moyenne brute de tous les indicateurs du TP</td>
+            <td>Très simple à expliquer</td>
+            <td>C11 écrase C13. Non retenu.</td>
+          </tr>
+          <tr>
+            <td>Compétences à poids égal + interpolation 0/8/14/20</td>
+            <td>Fidèle au référentiel, lisible en bulletin</td>
+            <td>Celle du site.</td>
+          </tr>
+          <tr>
+            <td>Veto sécurité (plafond 8 si QHSE = 0)</td>
+            <td>Aligné métier et C13-3 / C22</td>
+            <td>Activé par défaut.</td>
+          </tr>
+          <tr>
+            <td>Note = uniquement le niveau CCF de fin d’année</td>
+            <td>Identique à E5 / E6</td>
+            <td>Ne donne pas de note de TP en cours d’année.</td>
+          </tr>
+          <tr>
+            <td>Seuil : 2 partout ou la compétence n’est pas « acquise »</td>
+            <td>Clair pour le livret</td>
+            <td>Trop binaire pour un TP formatif.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title">Exemple</h2>
+    <div class="card">
+      <p class="lede">TP02 — remise en état d’un vérin. Observé : C12 = 2,4 et C13 = 2,0. Niveau TP = 2,2 → note = 14 + 0,2×6 = <strong>15,2 / 20</strong>. Si C13-3 (sécurité) était à 0, la note retomberait à 8, même avec un C12 excellent.</p>
+    </div>
+  </main>
+
+  <footer>
+    Grilles d’aide à l’évaluation : guide d’accompagnement pédagogique du BTS MS (pôles 1 et 2).
+  </footer>
+</body>
+</html>
