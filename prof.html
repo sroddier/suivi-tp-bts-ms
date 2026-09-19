@@ -4,10 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Professeur — suivi TP BTS MS</title>
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="css/app.css" />
   <link rel="icon" href="img/logo-artaud.png" />
 </head>
 <body>
+  <div id="lock" class="overlay">
+    <form id="lock-form" class="overlay-card" style="width:min(420px,100%)">
+      <div class="kicker">Espace réservé</div>
+      <h2>Mot de passe professeur</h2>
+      <p class="lede">La saisie des notes n’est pas ouverte aux élèves.</p>
+      <label>Mot de passe
+        <input id="lock-pass" type="password" autocomplete="current-password" required />
+      </label>
+      <p id="lock-msg" class="muted"></p>
+      <div class="toolbar">
+        <button class="btn" type="submit">Entrer</button>
+        <a class="btn ghost" href="index.html">Retour élève</a>
+      </div>
+    </form>
+  </div>
+
+  <div id="app-prof" hidden>
   <header class="top">
     <div class="brand">
       <img class="logo" src="img/logo-artaud.png" alt="Lycée Antonin Artaud" />
@@ -35,6 +53,7 @@
         <button class="btn ghost small" id="export">Exporter promo.js</button>
         <label class="btn ghost small" style="margin:0">Importer promo.js<input id="import" type="file" accept=".js,application/json,.json" hidden></label>
         <button class="btn ghost small" id="reset">Effacer le local</button>
+        <button class="btn ghost small" id="logout">Déconnexion</button>
       </div>
     </section>
 
@@ -98,6 +117,7 @@
   <footer>
     Les noms restent dans votre navigateur tant que vous n’exportez pas. Sur le site public, un code suffit.
   </footer>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="js/referentiel.js"></script>
@@ -107,6 +127,14 @@
   <script src="js/store.js"></script>
   <script src="js/pronote.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/prof.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Auth.gate(function () {
+      document.getElementById("app-prof").hidden = false;
+      var s = document.createElement("script");
+      s.src = "js/prof.js";
+      document.body.appendChild(s);
+    });
+  </script>
 </body>
 </html>

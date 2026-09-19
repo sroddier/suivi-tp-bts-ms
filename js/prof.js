@@ -174,6 +174,11 @@
     }
   });
 
+  $("logout").addEventListener("click", () => {
+    Auth.lock();
+    location.reload();
+  });
+
   let pending = [];
 
   function openPronote() {
