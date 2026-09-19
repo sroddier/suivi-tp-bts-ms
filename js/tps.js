@@ -1,50 +1,97 @@
+window.IND_DECOUVERTE = [
+  "C11-1",
+  "C13-1", "C13-2", "C13-3", "C13-4",
+  "C21-1", "C21-2", "C22-1",
+  "C24-1", "C24-2"
+];
+
+window.IND_DIAGNOSTIC = [
+  "C11-1", "C11-2", "C11-3", "C11-4", "C11-5",
+  "C11-6", "C11-7", "C11-8", "C11-9", "C11-10",
+  "C13-1", "C13-3",
+  "C21-1", "C21-2", "C22-1",
+  "C24-1", "C24-2"
+];
+
 window.TPS = [
   {
-    id: "TP01",
-    titre: "Diagnostic d’un système pneumatique",
+    id: "DEC-PAL1",
+    titre: "Découverte — Pallettic 1",
+    type: "decouverte",
+    machine: "pal1",
     pole: 1,
     duree: "2 h",
-    resume: "Constater, émettre des hypothèses, tester, nommer la fonction défaillante.",
-    indicateurs: ["C11-1", "C11-2", "C11-3", "C11-4", "C11-5", "C11-6", "C11-7", "C11-10"]
+    resume: "Mettre en service, conduire un cycle, nommer les composants des chaînes d’énergie et d’information.",
+    indicateurs: IND_DECOUVERTE
   },
   {
-    id: "TP02",
-    titre: "Remise en état d’un vérin et remise en service",
+    id: "DEC-PAL2",
+    titre: "Découverte — Pallettic 2",
+    type: "decouverte",
+    machine: "pal2",
+    pole: 1,
+    duree: "2 h",
+    resume: "Mettre en service, conduire un cycle, nommer les composants des chaînes d’énergie et d’information.",
+    indicateurs: IND_DECOUVERTE
+  },
+  {
+    id: "DEC-RAV",
+    titre: "Découverte — Ravoux",
+    type: "decouverte",
+    machine: "ravoux",
+    pole: 1,
+    duree: "2 h",
+    resume: "Mettre en service, conduire un cycle, nommer les composants des chaînes d’énergie et d’information.",
+    indicateurs: IND_DECOUVERTE
+  },
+  {
+    id: "DEC-ERM",
+    titre: "Découverte — Ermax",
+    type: "decouverte",
+    machine: "ermax",
+    pole: 1,
+    duree: "2 h",
+    resume: "Mettre en service, conduire un cycle, nommer les composants des chaînes d’énergie et d’information.",
+    indicateurs: IND_DECOUVERTE
+  },
+  {
+    id: "DIA-PAL1",
+    titre: "Diagnostic — Pallettic 1",
+    type: "diagnostic",
+    machine: "pal1",
     pole: 1,
     duree: "3 h",
-    resume: "Dépose / repose QHSE, réparation, paramétrage, mise en service, traçabilité.",
-    indicateurs: ["C12-1", "C12-2", "C12-4", "C12-5", "C12-6", "C12-8", "C13-1", "C13-2", "C13-3", "C13-4"]
+    resume: "Panne posée par le professeur. Constat, hypothèses, mesures, localisation, consignation. Fiche diagnostic.",
+    indicateurs: IND_DIAGNOSTIC
   },
   {
-    id: "TP03",
-    titre: "Analyse de risques et consignation",
-    pole: 2,
-    duree: "2 h",
-    resume: "Identifier les dangers, proposer et mettre en œuvre les mesures de prévention.",
-    indicateurs: ["C21-1", "C21-2", "C22-1", "C13-1", "C13-3"]
-  },
-  {
-    id: "TP04",
-    titre: "Gamme de maintenance préventive",
-    pole: 2,
-    duree: "2 h",
-    resume: "Réaliser une gamme, mesurer, décider, renseigner la GMAO / le compte rendu.",
-    indicateurs: ["C23-1", "C23-2", "C23-3", "C23-4", "C24-1", "C24-2", "C24-3"]
-  },
-  {
-    id: "TP05",
-    titre: "Diagnostic d’un automatisme",
+    id: "DIA-PAL2",
+    titre: "Diagnostic — Pallettic 2",
+    type: "diagnostic",
+    machine: "pal2",
     pole: 1,
     duree: "3 h",
-    resume: "Investigation sur chaîne d’information, localisation, cause, action corrective.",
-    indicateurs: ["C11-1", "C11-2", "C11-4", "C11-5", "C11-7", "C11-8", "C11-9", "C11-10", "C12-6", "C12-8"]
+    resume: "Panne posée par le professeur. Constat, hypothèses, mesures, localisation, consignation. Fiche diagnostic.",
+    indicateurs: IND_DIAGNOSTIC
   },
   {
-    id: "TP06",
-    titre: "Mise en service d’un bien après intervention",
+    id: "DIA-RAV",
+    titre: "Diagnostic — Ravoux",
+    type: "diagnostic",
+    machine: "ravoux",
     pole: 1,
-    duree: "2 h",
-    resume: "Procédures d’arrêt / marche, vérifications, sécurité, consignation de l’info.",
-    indicateurs: ["C13-1", "C13-2", "C13-3", "C13-4", "C12-7", "C12-9"]
+    duree: "3 h",
+    resume: "Panne posée par le professeur. Constat, hypothèses, mesures, localisation, consignation. Fiche diagnostic.",
+    indicateurs: IND_DIAGNOSTIC
+  },
+  {
+    id: "DIA-ERM",
+    titre: "Diagnostic — Ermax",
+    type: "diagnostic",
+    machine: "ermax",
+    pole: 1,
+    duree: "3 h",
+    resume: "Panne posée par le professeur. Constat, hypothèses, mesures, localisation, consignation. Fiche diagnostic.",
+    indicateurs: IND_DIAGNOSTIC
   }
 ];

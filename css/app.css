@@ -204,6 +204,25 @@ footer { max-width: 1080px; margin: 0 auto; padding: 0 1.2rem 2rem; color: var(-
 .mode { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.6rem 0; font-size: 0.9rem; }
 .mode label { flex-direction: row; align-items: center; gap: 0.35rem; color: var(--text); }
 
+.fiche label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.65rem; }
+.fiche textarea { min-height: 5.2rem; width: 100%; resize: vertical; }
+.fiche .checks { display: grid; gap: 0.35rem; margin: 0.4rem 0 0.8rem; }
+.fiche .checks label { flex-direction: row; align-items: center; gap: 0.45rem; color: var(--text); font-size: 0.9rem; margin: 0; }
+.fiche h2 { margin-top: 1.2rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.4rem 0 0.8rem; }
+.chip {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+  background: #f4e4dc; color: var(--accent); border-radius: 6px; padding: 0.12rem 0.45rem;
+}
+.ok-row { background: #fff; }
+
+@media print {
+  .top, .nav, .toolbar, footer, .noprint { display: none !important; }
+  body { background: #fff; }
+  .hero, .card { border: 1px solid #ccc; break-inside: avoid; }
+  main { max-width: none; padding: 0; }
+}
+
 @media (max-width: 820px) {
   .layout, .split, .grid2, .levels { grid-template-columns: 1fr; }
   .top { flex-direction: column; align-items: flex-start; }

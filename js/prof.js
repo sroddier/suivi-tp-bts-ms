@@ -1,7 +1,7 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   let selCode = null;
-  let selTp = "TP01";
+  let selTp = (window.TPS && TPS[0]) ? TPS[0].id : "DEC-PAL1";
   let draft = {};
 
   function promo() { return Store.merge(); }

@@ -1,0 +1,100 @@
+window.MACHINES = {
+  pal1: {
+    id: "pal1",
+    nom: "Pallettic 1",
+    type: "Palettiseur didactique",
+    marque: "Palettice / Cybernétix",
+    atelier: "Plateau BTS MS",
+    energies: ["Électrique 400 V tri + 24 Vcc", "Pneumatique 6 bar"],
+    fonction: "Prendre des cartons sur un convoyeur et les déposer selon un schéma de palettisation (pince, rotation, transfert, élévation).",
+    modes: ["Arrêt", "Manuel / pas à pas", "Automatique"],
+    composants: [
+      { fam: "Énergie", nom: "Sectionneur général", role: "Isolation électrique" },
+      { fam: "Énergie", nom: "FRL pneumatique", role: "Filtrer, régler, lubrifier l’air" },
+      { fam: "Sécurité", nom: "Arrêt d’urgence", role: "Couper les actionneurs" },
+      { fam: "Sécurité", nom: "Protecteurs / capteurs de porte", role: "Interdire le cycle portes ouvertes" },
+      { fam: "Info", nom: "Automate (TSX ou équivalent)", role: "Séquencement du cycle" },
+      { fam: "Info", nom: "Pupitre / Magelis", role: "Conduite, défauts, modes" },
+      { fam: "Info", nom: "Capteur présence carton", role: "Autoriser la prise" },
+      { fam: "Info", nom: "ILS pince ouverte / fermée", role: "Confirmer la préhension" },
+      { fam: "Info", nom: "Capteurs rotation 0° / 90°", role: "Orientation de la pince" },
+      { fam: "Puissance", nom: "Moteur convoyeur", role: "Amener le carton" },
+      { fam: "Puissance", nom: "Vérin ouverture-fermeture pince", role: "Saisir le carton" },
+      { fam: "Puissance", nom: "Vérin rotation pince", role: "Orienter le carton" },
+      { fam: "Puissance", nom: "Vérins poussée / transfert", role: "Déplacer le préhenseur" },
+      { fam: "Puissance", nom: "Élévateur préhenseur", role: "Montée / descente" }
+    ]
+  },
+  pal2: {
+    id: "pal2",
+    nom: "Pallettic 2",
+    type: "Palettiseur didactique",
+    marque: "Palettice / Cybernétix",
+    atelier: "Plateau BTS MS",
+    energies: ["Électrique 400 V tri + 24 Vcc", "Pneumatique 6 bar"],
+    fonction: "Même famille que Pallettic 1 : palettiser des cartons. Les deux machines permettent de comparer deux pannes différentes sur un même type de bien.",
+    modes: ["Arrêt", "Manuel / pas à pas", "Automatique"],
+    composants: [
+      { fam: "Énergie", nom: "Sectionneur général", role: "Isolation électrique" },
+      { fam: "Énergie", nom: "FRL pneumatique", role: "Filtrer, régler, lubrifier l’air" },
+      { fam: "Sécurité", nom: "Arrêt d’urgence", role: "Couper les actionneurs" },
+      { fam: "Sécurité", nom: "Protecteurs / capteurs de porte", role: "Interdire le cycle portes ouvertes" },
+      { fam: "Info", nom: "Automate (TSX ou équivalent)", role: "Séquencement du cycle" },
+      { fam: "Info", nom: "Pupitre / Magelis", role: "Conduite, défauts, modes" },
+      { fam: "Info", nom: "Capteur présence carton", role: "Autoriser la prise" },
+      { fam: "Info", nom: "ILS pince ouverte / fermée", role: "Confirmer la préhension" },
+      { fam: "Info", nom: "Capteurs rotation 0° / 90°", role: "Orientation de la pince" },
+      { fam: "Puissance", nom: "Moteur convoyeur", role: "Amener le carton" },
+      { fam: "Puissance", nom: "Vérin ouverture-fermeture pince", role: "Saisir le carton" },
+      { fam: "Puissance", nom: "Vérin rotation pince", role: "Orienter le carton" },
+      { fam: "Puissance", nom: "Vérins poussée / transfert", role: "Déplacer le préhenseur" },
+      { fam: "Puissance", nom: "Élévateur préhenseur", role: "Montée / descente" }
+    ]
+  },
+  ravoux: {
+    id: "ravoux",
+    nom: "Ravoux",
+    type: "Système automatisé didactique",
+    marque: "Ravoux Automatismes",
+    atelier: "Plateau BTS MS",
+    energies: ["Électrique", "Pneumatique", "Vide (ventouse)"],
+    fonction: "Convoyer et manipuler des pièces (prise par ventouse, contrôles, défauts convoyeur / voie analogique / vide).",
+    modes: ["Arrêt", "Manuel", "Automatique"],
+    composants: [
+      { fam: "Énergie", nom: "Sectionneur / disjoncteurs", role: "Isolation et protection" },
+      { fam: "Énergie", nom: "FRL + réseau air", role: "Alimenter les actionneurs" },
+      { fam: "Énergie", nom: "Générateur de vide / ventouse", role: "Préhension par succion" },
+      { fam: "Sécurité", nom: "Arrêt d’urgence", role: "Arrêt immédiat" },
+      { fam: "Sécurité", nom: "Capteurs de protecteurs", role: "Sécuriser l’accès" },
+      { fam: "Info", nom: "Automate", role: "Pilotage du cycle" },
+      { fam: "Info", nom: "Pupitre / voyants", role: "Conduite et défauts" },
+      { fam: "Info", nom: "Capteurs de présence / position", role: "Chaîne d’information" },
+      { fam: "Info", nom: "Voie analogique", role: "Mesure (vide, position…)" },
+      { fam: "Puissance", nom: "Moteur convoyeur", role: "Transfert des pièces" },
+      { fam: "Puissance", nom: "Vérins pneumatiques", role: "Mouvements de manipulation" },
+      { fam: "Puissance", nom: "Électrodistributeurs", role: "Préactionneurs pneumatiques" }
+    ]
+  },
+  ermax: {
+    id: "ermax",
+    nom: "Ermax",
+    type: "Système automatisé didactique",
+    marque: "ERM / Ermax",
+    atelier: "Plateau BTS MS",
+    energies: ["Électrique", "Pneumatique"],
+    fonction: "Système pluritechnologique de manipulation / transfert (convoyage, préhension, capteurs, IHM). Conduite en manuel et en automatique.",
+    modes: ["Arrêt", "Manuel", "Automatique"],
+    composants: [
+      { fam: "Énergie", nom: "Armoire + sectionneur", role: "Distribution électrique" },
+      { fam: "Énergie", nom: "FRL pneumatique", role: "Préparation d’air" },
+      { fam: "Sécurité", nom: "Arrêt d’urgence", role: "Arrêt immédiat" },
+      { fam: "Sécurité", nom: "Barrière ou capteurs de porte", role: "Protection de zone" },
+      { fam: "Info", nom: "Automate + IHM", role: "Conduite et séquencement" },
+      { fam: "Info", nom: "Capteurs photoélectriques / ILS / inductifs", role: "Acquisitions d’état" },
+      { fam: "Info", nom: "Colonne lumineuse", role: "États machine" },
+      { fam: "Puissance", nom: "Moteur(s) de convoyage", role: "Transfert" },
+      { fam: "Puissance", nom: "Vérins / préhenseur", role: "Manipulation" },
+      { fam: "Puissance", nom: "Contacteurs / distributeurs", role: "Préactionneurs" }
+    ]
+  }
+};

@@ -12,6 +12,15 @@ Notes de travaux pratiques **calculées à partir des compétences** du BTS Main
 
 Démo : `LEA24`, `YAN24`, `INE24`, `KAR24`.
 
+## Les 8 TP du plateau
+
+| Fiche | Machine | Compétences notées |
+|-------|---------|-------------------|
+| [Découverte](tps.html) 2 h | Pallettic 1, Pallettic 2, Ravoux, Ermax | C13 conduite · C21/C22 risques · C11-1 · C24 |
+| [Diagnostic](tps.html) 3 h | idem, panne posée à l’avance | C11 complète · consignation C13/C21/C22 · C24 |
+
+Fiches élèves : [tps.html](https://sroddier.github.io/suivi-tp-bts-ms/tps.html).
+
 ## Importer la classe depuis Pronote
 
 Espace professeur → **Import Pronote**.

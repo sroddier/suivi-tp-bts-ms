@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Les TP — BTS MS</title>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="icon" href="img/logo-artaud.png" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="img/logo-artaud.png" alt="Lycée Antonin Artaud" />
+      <div>
+        <strong>BTS MS · option SP</strong>
+        <em>Fiches de TP — plateau technique</em>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Élève</a>
+      <a class="on" href="tps.html">Les TP</a>
+      <a href="methode.html">Méthode</a>
+      <a href="prof.html">Professeur</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="kicker">Quatre machines · deux familles de TP</div>
+      <h1>Découvrir, puis diagnostiquer.</h1>
+      <p class="lede">Chaque machine a un TP découverte (conduite + identification des composants) puis un TP diagnostic (panne posée à l’avance, fiche officielle du lycée). Les notes viennent des indicateurs 0–3, pas d’une note saisie à part.</p>
+    </section>
+
+    <h2 class="section-title">TP découverte — 2 h</h2>
+    <p class="muted" style="margin-top:-0.4rem">C13 conduite · C21/C22 risques · C11-1 s’informer · C24 écrire. Pas de panne.</p>
+    <div class="grid" id="dec" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.85rem;margin-top:0.7rem"></div>
+
+    <h2 class="section-title">TP diagnostic — 3 h</h2>
+    <p class="muted" style="margin-top:-0.4rem">Toute la C11 · consignation C13/C21/C22 · C24. Panne préparée par le professeur.</p>
+    <div class="grid" id="dia" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.85rem;margin-top:0.7rem"></div>
+  </main>
+
+  <footer>Lycée Antonin Artaud · Pallettic 1 &amp; 2, Ravoux, Ermax.</footer>
+  <script src="js/tps.js"></script>
+  <script src="js/machines.js"></script>
+  <script>
+    const card = (t) => {
+      const m = MACHINES[t.machine];
+      return `<a class="card" href="tp.html?id=${t.id}">
+        <span class="tag">${t.id} · ${t.duree}</span>
+        <h3 style="margin:0.45rem 0 0.3rem;font-size:1.05rem">${t.titre}</h3>
+        <p style="margin:0 0 0.7rem;color:var(--muted);font-size:0.9rem">${t.resume}</p>
+        <span class="cta" style="font-size:0.85rem;font-weight:700;color:var(--accent)">Ouvrir la fiche →</span>
+      </a>`;
+    };
+    document.getElementById("dec").innerHTML = TPS.filter((t) => t.type === "decouverte").map(card).join("");
+    document.getElementById("dia").innerHTML = TPS.filter((t) => t.type === "diagnostic").map(card).join("");
+  </script>
+</body>
+</html>
