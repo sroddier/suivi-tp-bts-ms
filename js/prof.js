@@ -11,8 +11,9 @@
     $("eleves").innerHTML = p.eleves.map((e) => {
       const evs = p.evaluations.filter((x) => x.code === e.code);
       const profil = Engine.profilEleve(evs, TPS);
+      const nom = e.nom ? e.nom + " " : "";
       return `<button type="button" data-code="${e.code}" class="${e.code === selCode ? "on" : ""}">
-        ${e.prenom} <small>${e.code} · ${Engine.fmtNote(profil.moyenne)} · ${evs.length} TP</small>
+        ${nom}${e.prenom} <small>${e.code} · ${Engine.fmtNote(profil.moyenne)} · ${evs.length} TP</small>
       </button>`;
     }).join("");
     $("eleves").querySelectorAll("button").forEach((b) => {
@@ -48,7 +49,7 @@
     }
     const live = Engine.scoreTp(draft.scores);
     $("form").innerHTML = `
-      <div class="kicker">${el.prenom} · ${el.code}</div>
+      <div class="kicker">${el.nom ? el.nom + " " : ""}${el.prenom} · ${el.code}</div>
       <h2>${tp.id} — ${tp.titre}</h2>
       <p class="lede">${tp.resume} Durée indicative : ${tp.duree}.</p>
       <div class="stats" style="margin-top:0.8rem">
@@ -113,7 +114,7 @@
       p.eleves.map((e) => {
         const profil = Engine.profilEleve(p.evaluations.filter((x) => x.code === e.code), TPS);
         return `<tr>
-          <td><strong>${e.prenom}</strong><div class="muted">${e.code}</div></td>
+          <td><strong>${e.nom ? e.nom + " " : ""}${e.prenom}</strong><div class="muted">${e.code}${e.groupe ? " · " + e.groupe : ""}</div></td>
           ${ids.map((id) => {
             const a = profil.actuel[id];
             return `<td class="${a.cls}">${a.niveau == null ? "—" : `<span class="tag">${a.label}</span>`}</td>`;
@@ -131,11 +132,15 @@
   }
 
   $("add").addEventListener("click", () => {
-    const prenom = prompt("Prénom de l’élève ?");
+    const nom = prompt("Nom ?");
+    if (nom == null) return;
+    const prenom = prompt("Prénom ?");
     if (!prenom) return;
-    const code = (prompt("Code élève (ex. LEA24) ?", prenom.slice(0, 3).toUpperCase() + "24") || "").toUpperCase();
+    const used = new Set(promo().eleves.map((e) => e.code));
+    const suggest = Pronote.makeCode(nom, prenom, used);
+    const code = (prompt("Code élève ?", suggest) || "").toUpperCase().replace(/\s+/g, "");
     if (!code) return;
-    Store.upsertEleve({ code, prenom, groupe: "MS1" });
+    Store.upsertEleve({ code, nom: nom.toUpperCase(), prenom, groupe: "MS1" });
     selCode = code;
     loadDraft();
     render();
@@ -167,6 +172,90 @@
       Store.resetLocal();
       render();
     }
+  });
+
+  let pending = [];
+
+  function openPronote() {
+    $("pronote-modal").hidden = false;
+    $("pronote-msg").textContent = "";
+  }
+  function closePronote() {
+    $("pronote-modal").hidden = true;
+  }
+
+  function showPreview(text) {
+    const parsed = Pronote.rowsFromText(text);
+    if (parsed.warning) {
+      $("pronote-msg").textContent = parsed.warning;
+      $("pronote-preview").hidden = true;
+      pending = [];
+      return;
+    }
+    pending = Pronote.assignCodes(parsed.rows, promo().eleves);
+    $("pronote-msg").textContent = pending.length + " élève(s) détecté(s). Les codes déjà connus (même nom + prénom) sont conservés.";
+    $("pronote-preview").hidden = false;
+    $("pronote-rows").innerHTML = pending.map((e, i) =>
+      `<tr>
+        <td><input type="checkbox" data-i="${i}" checked></td>
+        <td>${e.code}</td>
+        <td>${e.nom}</td>
+        <td>${e.prenom}</td>
+        <td>${e.groupe || "—"}</td>
+      </tr>`
+    ).join("");
+  }
+
+  async function fromFile(file) {
+    try {
+      const text = await Pronote.fileToText(file);
+      $("paste-box").value = text;
+      showPreview(text);
+    } catch (err) {
+      $("pronote-msg").textContent = err.message;
+    }
+  }
+
+  $("pronote").addEventListener("click", openPronote);
+  $("pronote-close").addEventListener("click", closePronote);
+  $("pronote-modal").addEventListener("click", (e) => {
+    if (e.target === $("pronote-modal")) closePronote();
+  });
+  $("pronote-parse").addEventListener("click", () => showPreview($("paste-box").value));
+  $("pronote-file").addEventListener("change", (e) => {
+    const f = e.target.files[0];
+    if (f) fromFile(f);
+    e.target.value = "";
+  });
+
+  const drop = $("drop");
+  drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", (e) => {
+    e.preventDefault();
+    drop.classList.remove("over");
+    const f = e.dataTransfer.files[0];
+    if (f) fromFile(f);
+  });
+
+  $("pronote-apply").addEventListener("click", () => {
+    const chosen = [];
+    $("pronote-rows").querySelectorAll("input[type=checkbox]").forEach((box) => {
+      if (box.checked) chosen.push(pending[Number(box.dataset.i)]);
+    });
+    if (!chosen.length) {
+      $("pronote-msg").textContent = "Aucun élève coché.";
+      return;
+    }
+    const mode = document.querySelector("input[name=imode]:checked").value;
+    const groupes = chosen.map((e) => e.groupe).filter(Boolean);
+    const groupe = groupes.length ? groupes.sort((a, b) => groupes.filter((g) => g === b).length - groupes.filter((g) => g === a).length)[0] : "";
+    Store.setEleves(chosen, { mode, groupe });
+    selCode = chosen[0].code;
+    loadDraft();
+    render();
+    closePronote();
+    UI.toast(chosen.length + " élève(s) importé(s) depuis Pronote.");
   });
 
   const first = promo().eleves[0];

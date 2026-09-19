@@ -12,14 +12,29 @@ Notes de travaux pratiques **calculées à partir des compétences** du BTS Main
 
 Démo : `LEA24`, `YAN24`, `INE24`, `KAR24`.
 
+## Importer la classe depuis Pronote
+
+Espace professeur → **Import Pronote**.
+
+1. Dans Pronote, ouvrez la **liste des élèves** de la classe / du groupe.
+2. Cliquez sur l’icône d’export en haut à droite de la liste.
+   - **Client web** : un CSV est téléchargé. Déposez-le (ou un Excel).
+   - **Client lourd** : la liste est copiée. Collez-la dans la zone prévue (Ctrl+V).
+3. Vérifiez l’aperçu (codes générés : 3 lettres du nom + 2 du prénom, ex. `DUPMA`).
+4. **Remplacer** la liste démo, ou **fusionner** (les élèves déjà présents gardent leur code).
+
+Un fichier d’exemple : [`exemple-pronote.csv`](exemple-pronote.csv).
+
+Colonnes reconnues : Nom, Prénom, Classe / Division, éventuellement Identifiant. Les autres colonnes (sexe, date de naissance…) sont ignorées.
+
 ## Publier une promo réelle
 
-1. Espace professeur : ajouter les élèves (codes, pas les noms complets).
+1. Importer Pronote (ou ajouter les élèves à la main).
 2. Noter chaque TP (0 / 1 / 2 / 3 / non observé).
-3. **Exporter** → remplacer `js/promo.js`.
+3. **Exporter promo.js** → remplacer `js/promo.js`.
 4. Double-cliquer `publier.bat`.
 
-Les saisies restent dans le navigateur du professeur tant qu’elles ne sont pas exportées.
+Les saisies restent dans le navigateur du professeur tant qu’elles ne sont pas exportées. Sur le site public, préférez des **codes** plutôt que les noms complets.
 
 ## Moteur
 

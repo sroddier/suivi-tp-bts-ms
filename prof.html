@@ -29,9 +29,10 @@
       <h1>Vous cochez des indicateurs.<br>Le site fait la note.</h1>
       <p class="lede">Les évaluations de la démo sont déjà en ligne. Ce que vous enregistrez ici reste dans <strong>ce navigateur</strong> jusqu’à export. Pour que les élèves le voient sur le site public : exporter, remplacer <code>js/promo.js</code>, double-cliquer <code>publier.bat</code>.</p>
       <div class="toolbar">
-        <button class="btn small" id="add">Ajouter un élève</button>
-        <button class="btn ghost small" id="export">Exporter JSON</button>
-        <label class="btn ghost small" style="margin:0">Importer<input id="import" type="file" accept="application/json" hidden></label>
+        <button class="btn small" id="pronote">Import Pronote</button>
+        <button class="btn ghost small" id="add">Ajouter un élève</button>
+        <button class="btn ghost small" id="export">Exporter promo.js</button>
+        <label class="btn ghost small" style="margin:0">Importer promo.js<input id="import" type="file" accept=".js,application/json,.json" hidden></label>
         <button class="btn ghost small" id="reset">Effacer le local</button>
       </div>
     </section>
@@ -56,15 +57,54 @@
     </div>
   </main>
 
+  <div id="pronote-modal" class="overlay" hidden>
+    <div class="overlay-card">
+      <div class="kicker">Liste de classe</div>
+      <h2>Importer depuis Pronote</h2>
+      <p class="lede">Dans Pronote : liste des élèves → icône d’export en haut à droite. Client web : fichier CSV. Client lourd : la liste est copiée, collez-la ci-dessous. Excel (.xlsx) accepté.</p>
+      <div class="drop" id="drop">
+        <strong>Déposez un CSV / Excel</strong> ou
+        <label class="btn ghost small" style="display:inline-block;margin:0.35rem">Choisir un fichier<input id="pronote-file" type="file" accept=".csv,.txt,.tsv,.xls,.xlsx,text/csv" hidden></label>
+      </div>
+      <label style="margin-top:0.8rem">Coller la liste (Ctrl+V)
+        <textarea id="paste-box" placeholder="Nom	Prénom	Classe&#10;DUPONT	Marie	1BTS MS"></textarea>
+      </label>
+      <div class="toolbar" style="margin-top:0.7rem">
+        <button class="btn" id="pronote-parse">Lire la liste</button>
+        <button class="btn ghost" id="pronote-close">Fermer</button>
+      </div>
+      <p id="pronote-msg" class="muted"></p>
+      <div id="pronote-preview" hidden>
+        <div class="mode">
+          <label><input type="radio" name="imode" value="replace" checked> Remplacer la liste actuelle</label>
+          <label><input type="radio" name="imode" value="merge"> Ajouter / fusionner (garde les codes existants)</label>
+        </div>
+        <div class="preview-table">
+          <table>
+            <thead>
+              <tr><th></th><th>Code</th><th>Nom</th><th>Prénom</th><th>Classe</th></tr>
+            </thead>
+            <tbody id="pronote-rows"></tbody>
+          </table>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="pronote-apply">Importer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    Ne publiez pas de noms-prénoms complets sur GitHub Pages. Un code (LEA24) suffit.
+    Les noms restent dans votre navigateur tant que vous n’exportez pas. Sur le site public, un code suffit.
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="js/referentiel.js"></script>
   <script src="js/tps.js"></script>
   <script src="js/promo.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/pronote.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/prof.js"></script>
 </body>
