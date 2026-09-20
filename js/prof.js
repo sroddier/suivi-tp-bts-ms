@@ -136,6 +136,7 @@
       <div class="kicker">${el.nom ? el.nom + " " : ""}${el.prenom} · ${el.code}</div>
       <h2>${tp.id} — ${tp.titre}</h2>
       <p class="lede">${tp.resume} Durée indicative : ${tp.duree}.</p>
+      <p class="lede">${(tp.taches || []).map((id) => TACHES[id] ? id + " " + TACHES[id].titre : id).join(" · ")}</p>
       <div class="stats" style="margin-top:0.8rem">
         <div class="stat"><b>${Engine.fmtNote(live.note)}</b><span>note du TP</span></div>
         <div class="stat"><b>${Engine.fmtNiv(live.niveau)}</b><span>niveau moyen</span></div>
@@ -195,7 +196,7 @@
 
   function renderTable() {
     const p = promo();
-    const ids = ["C11", "C12", "C13", "C21", "C22", "C23", "C24"];
+    const ids = ["C11", "C12", "C13", "C21", "C22", "C24", "C41", "C42"];
     const list = filteredEleves();
     $("classe").innerHTML = `<tr><th>Élève</th>${ids.map((id) => `<th>${id}</th>`).join("")}<th>Moy.</th></tr>` +
       (list.map((e) => {

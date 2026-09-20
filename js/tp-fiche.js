@@ -21,15 +21,20 @@
   })();
 
   function chips() {
+    const taches = (tp.taches || []).map((id) => {
+      const t = TACHES[id];
+      return `<span class="chip">${id} · ${t ? t.titre : id}</span>`;
+    }).join("");
     const by = {};
     (tp.indicateurs || []).forEach((ind) => {
       const c = ind.split("-")[0];
       (by[c] ||= []).push(ind);
     });
-    return Object.keys(by).map((c) => {
+    const comps = Object.keys(by).map((c) => {
       const t = COMPETENCES[c] ? COMPETENCES[c].titre : c;
       return `<span class="chip">${c} · ${t}</span>`;
     }).join("");
+    return taches + comps;
   }
 
   function val(name) {
@@ -76,7 +81,7 @@
     <form class="fiche" id="fiche">
       <div class="card">
         <h2>1. Sécurité avant toute mise en service</h2>
-        <p class="muted">C21, C22, C13-3 — identifier les dangers de <strong>${machine.nom}</strong>, choisir et mettre en œuvre les mesures.</p>
+        <p class="muted">GAP pôle 2 : C21/C22 sont transversales et s’appliquent aussi au pôle 1. Avant toute conduite de <strong>${machine.nom}</strong>.</p>
         ${field("dangers", "Dangers spécifiques de cette machine (personnes, bien, environnement)", 4)}
         ${field("epi", "EPI et mesures de prévention que vous mettez en œuvre", 3)}
         <div class="checks">
@@ -86,16 +91,16 @@
         </div>
       </div>
       <div class="card" style="margin-top:0.8rem">
-        <h2>2. Conduite du bien</h2>
-        <p class="muted">C13 — mise en service, cycle, mise à l’arrêt. Modes : ${machine.modes.join(" · ")}.</p>
+        <h2>2. Conduite du bien — T1-4</h2>
+        <p class="muted">C13 — mise en service, cycle, mise à l’arrêt. Vérifications avant marche. Modes : ${machine.modes.join(" · ")}.</p>
         ${field("mes", "Procédure de mise en service que vous avez suivie", 4)}
         ${field("manuel", "Ce que vous avez fait en mode manuel (actionneurs essayés)", 3)}
         ${field("auto", "Observation d’un cycle automatique (étapes vues)", 4)}
         ${field("arret", "Procédure de mise à l’arrêt / consignation légère en fin de séance", 3)}
       </div>
       <div class="card" style="margin-top:0.8rem">
-        <h2>3. Identifier les composants</h2>
-        <p class="muted">Objectif du TP : localiser sur la machine, noter le repère. Chaîne d’information vs chaîne de puissance.</p>
+        <h2>3. Identifier le bien — C41 / C42</h2>
+        <p class="muted">GAP pôle 4, travaillé sur le plateau (pôle 1) : organisation fonctionnelle / structurelle / temporelle, puis chaînes de puissance et d’information. Localiser, noter le repère.</p>
         <div style="overflow:auto">
           <table>
             <thead><tr><th>Famille</th><th>Composant</th><th>Rôle</th><th>Repère / où</th><th>Vu</th></tr></thead>
@@ -105,10 +110,11 @@
         ${field("manquant", "Composants vus sur la machine mais absents du tableau", 3)}
       </div>
       <div class="card" style="margin-top:0.8rem">
-        <h2>4. Fonctionnement — compte rendu</h2>
-        <p class="muted">C11-1, C24 — décrire le bien, pas le recopier du polycopié.</p>
-        ${field("global", "Fonctionnement global (à quoi sert la machine, flux des pièces)", 5)}
-        ${field("detail", "Fonctionnement détaillé d’un sous-ensemble au choix (capteur → automate → préactionneur → actionneur)", 6)}
+        <h2>4. Compte rendu — C24</h2>
+        <p class="muted">GAP 1re année : compte rendu d’activité pratique. C41-1 fonctions, C41-3 cycle, C42 chaînes.</p>
+        ${field("global", "Organisation fonctionnelle : à quoi sert le bien, flux des pièces (C41-1)", 4)}
+        ${field("temporel", "Organisation temporelle : modes de marche et déroulement d’un cycle (C41-3)", 4)}
+        ${field("detail", "Un sous-ensemble : capteur → automate → préactionneur → actionneur (C42)", 5)}
       </div>
     </form>`;
   }
@@ -131,8 +137,8 @@
     return `${header()}
     <form class="fiche" id="fiche">
       <div class="card">
-        <h2>Demande d’intervention</h2>
-        <p class="muted">Panne posée à l’avance sur <strong>${machine.nom}</strong>. C11-1 — collecter les informations.</p>
+        <h2>T1-1 — Diagnostiquer les pannes</h2>
+        <p class="muted">GAP pôle 1, C11. Panne posée à l’avance sur <strong>${machine.nom}</strong>. Collecter, hypothèses, tests, localisation.</p>
         <div class="grid2">
           ${field("di", "DI n°")}
           ${field("demandeur", "Nom du demandeur")}
@@ -173,11 +179,11 @@
             <tbody>${mes}</tbody>
           </table>
         </div>
-        ${field("cause", "Cause de défaillance retenue (plausible, localisée)", 4)}
+        ${field("cause", "Cause de défaillance retenue (plausible, localisée) — C11-10", 4)}
       </div>
       <div class="card" style="margin-top:0.8rem">
-        <h2>Bon de consignation / déconsignation</h2>
-        <p class="muted">C13, C21, C22 — avant mesure invasive ou dépose. Valider avec le professeur.</p>
+        <h2>Prévention — C21 / C22 (avant T1-3)</h2>
+        <p class="muted">GAP : C21 et C22 sont transversales, aussi au pôle 1. Analyse de risques avant l’action corrective.</p>
         <div class="checks">
           <label><input type="checkbox" name="c-el" ${saved["c-el"] ? "checked" : ""} /> Consignation électrique (partielle / totale)</label>
           <label><input type="checkbox" name="c-pn" ${saved["c-pn"] ? "checked" : ""} /> Consignation pneumatique</label>
@@ -187,6 +193,18 @@
         </div>
         ${field("c-raison", "Raison de la consignation + composant visé", 3)}
         ${field("c-qui", "Consignation effectuée par / date-heure")}
+      </div>
+      <div class="card" style="margin-top:0.8rem">
+        <h2>T1-3 — Effectuer les actions correctives</h2>
+        <p class="muted">GAP C12 : dépannage et/ou réparation. Le paramétrage peut être tout ou partie de la solution.</p>
+        ${field("action", "Action réalisée (paramétrage, échange, réparation, réglage) et justification", 4)}
+        ${field("qhse", "Règles QHSE respectées lors de l’intervention (C12-1)", 3)}
+      </div>
+      <div class="card" style="margin-top:0.8rem">
+        <h2>T1-4 — Remettre en service</h2>
+        <p class="muted">C13 + C12-7 / C12-8. Vérifications avant marche, bien opérationnel, traçabilité.</p>
+        ${field("remservice", "Procédure de remise en service suivie et résultats des vérifications", 4)}
+        ${field("c-qui2", "Déconsignation / traçabilité (qui, quand)")}
       </div>
       <div class="card" style="margin-top:0.8rem">
         <h2>Étude sécurité sur ce système</h2>

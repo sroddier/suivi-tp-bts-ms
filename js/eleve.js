@@ -40,7 +40,7 @@
     $("stat-niv").parentElement.className = "stat " + lab.cls;
     $("stat-ntp").textContent = String(profil.nTp);
 
-    const order = ["C11", "C12", "C13", "C21", "C22", "C23", "C24"];
+    const order = ["C11", "C12", "C13", "C21", "C22", "C23", "C24", "C41", "C42"];
     $("comps").innerHTML = order.map((id) => {
       const c = COMPETENCES[id];
       const a = profil.actuel[id];

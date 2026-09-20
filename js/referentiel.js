@@ -15,7 +15,9 @@ window.COMPETENCES = {
   C24: { id: "C24", pole: 2, titre: "Communiquer par l’écrit", unite: "U6" },
   C31: { id: "C31", pole: 3, titre: "Définir une amélioration", unite: "U7" },
   C32: { id: "C32", pole: 3, titre: "Réaliser les travaux", unite: "U7" },
-  C33: { id: "C33", pole: 3, titre: "Communiquer oralement", unite: "U7" }
+  C33: { id: "C33", pole: 3, titre: "Communiquer oralement", unite: "U7" },
+  C41: { id: "C41", pole: 4, titre: "Organisation fonctionnelle, structurelle, temporelle", unite: "U8" },
+  C42: { id: "C42", pole: 4, titre: "Chaîne de puissance et d’information", unite: "U8" }
 };
 
 window.SECURITE = ["C12-1", "C12-4", "C13-3", "C21-1", "C22-1"];
@@ -60,11 +62,17 @@ window.INDICATEURS = {
   "C32-1": "La préparation des travaux est opérationnelle",
   "C32-2": "Les travaux respectent les procédures définies",
   "C33-1": "Les informations techniques permettent de comprendre l’activité",
-  "C33-2": "L’expression est claire, fluide"
+  "C33-2": "L’expression est claire, fluide",
+  "C41-1": "Les fonctions du bien sont identifiées à partir du dossier et du réel",
+  "C41-2": "L’organisation structurelle (sous-ensembles, composants) est identifiée",
+  "C41-3": "L’organisation temporelle (modes de marche, cycle) est identifiée",
+  "C42-1": "La chaîne de puissance est caractérisée (énergie, préactionneurs, actionneurs)",
+  "C42-2": "La chaîne d’information est caractérisée (capteurs, automate, IHM)"
 };
 
 window.POLES = {
   1: "Maintenance corrective",
   2: "Maintenance préventive",
-  3: "Maintenance améliorative"
+  3: "Maintenance améliorative",
+  4: "Intégration d’un bien"
 };
