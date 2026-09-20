@@ -278,7 +278,7 @@
 
   function refreshSheetUi() {
     $("sheet-url").value = Sheets.url();
-    if (Sheets.configured()) setSheetStatus("URL enregistrée. Cliquez sur Tester.");
+    if (Sheets.configured()) setSheetStatus("Google Sheet prêt sur tous les PC (URL par défaut). Tester si besoin.");
     else setSheetStatus("Non connecté — les notes restent seulement dans ce navigateur.");
   }
 

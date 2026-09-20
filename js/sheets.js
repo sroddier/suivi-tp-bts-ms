@@ -1,11 +1,16 @@
 (function (w) {
   const URL_KEY = "suivi-tp-bts-ms-sheet-url";
   const TOKEN = "7856";
+  const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbya9Uhkv38wG-PDYVEPbFX1qtnoWFmU6zuGkto758amGWE-kGpRWZVoMEMhUWvwmJ10/exec";
   const SHEET_LINK = "https://docs.google.com/spreadsheets/d/1JYMdFuGzN5Hv20Oj4zGj12FU_vlTd7eFV3NdT99p6GA/edit";
 
   function url() {
-    try { return (localStorage.getItem(URL_KEY) || "").trim(); }
-    catch { return ""; }
+    try {
+      const stored = (localStorage.getItem(URL_KEY) || "").trim();
+      return stored || DEFAULT_URL;
+    } catch {
+      return DEFAULT_URL;
+    }
   }
 
   function setUrl(u) {
@@ -97,5 +102,5 @@
     });
   }
 
-  w.Sheets = { url, setUrl, configured, ping, load, save, sync, SHEET_LINK, TOKEN };
+  w.Sheets = { url, setUrl, configured, ping, load, save, sync, SHEET_LINK, TOKEN, DEFAULT_URL };
 })(window);
