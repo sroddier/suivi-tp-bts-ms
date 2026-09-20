@@ -12,6 +12,7 @@
 
   function saveLocal(data) {
     localStorage.setItem(KEY, JSON.stringify(data));
+    if (w.Sheets && typeof w.Sheets.sync === "function") w.Sheets.sync();
   }
 
   function merge() {

@@ -45,6 +45,16 @@ Colonnes reconnues : Nom, Prénom, Classe / Division, éventuellement Identifian
 
 Les saisies restent dans le navigateur du professeur tant qu’elles ne sont pas exportées. Sur le site public, préférez des **codes** plutôt que les noms complets.
 
+## Google Sheet
+
+Classeur : [BTS MS — Suivi des TP](https://docs.google.com/spreadsheets/d/1JYMdFuGzN5Hv20Oj4zGj12FU_vlTd7eFV3NdT99p6GA/edit)
+
+1. Dans le classeur : Extensions → Apps Script, coller [`gas/Code.gs`](gas/Code.gs).
+2. Déployer → Application Web (Moi / Tout le monde).
+3. Coller l’URL `/exec` dans l’espace professeur.
+
+Onglets : `Eleves`, `Evaluations`, `Meta`. Chaque clic sur **Enregistrer** envoie le jeu complet.
+
 ## Moteur
 
 - Indicateurs officiels du GAP (pôles 1 et 2).

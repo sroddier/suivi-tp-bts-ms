@@ -164,7 +164,7 @@
         <button class="btn" id="save">Enregistrer</button>
         <button class="btn ghost" id="copy">Dupliquer vers…</button>
       </div>
-      <p class="muted">Enregistrement local (navigateur). Pour le publier aux élèves : Exporter, coller dans js/promo.js, puis publier.bat.</p>
+      <p class="muted">Enregistrement local, puis Google Sheet si l’URL /exec est configurée. Pour le site élève : Exporter promo.js.</p>
     `;
     $("form").querySelectorAll(".pills").forEach((p) => {
       p.querySelectorAll("button").forEach((b) => {
@@ -186,9 +186,10 @@
         code: selCode, tp: selTp, date: draft.date,
         scores: draft.scores, commentaire: draft.commentaire
       });
-      UI.toast("Évaluation enregistrée sur cet ordinateur.");
+      UI.toast(Sheets.configured() ? "Enregistré ici et envoyé vers Google Sheet." : "Enregistré sur cet ordinateur (Sheet non connecté).");
       renderList();
       renderTable();
+      if (Sheets.configured()) Sheets.sync();
     });
   }
 
@@ -269,6 +270,78 @@
   $("logout").addEventListener("click", () => {
     Auth.lock();
     location.reload();
+  });
+
+  function setSheetStatus(text) {
+    $("sheet-status").textContent = text;
+  }
+
+  function refreshSheetUi() {
+    $("sheet-url").value = Sheets.url();
+    if (Sheets.configured()) setSheetStatus("URL enregistrée. Cliquez sur Tester.");
+    else setSheetStatus("Non connecté — les notes restent seulement dans ce navigateur.");
+  }
+
+  $("sheet-save-url").addEventListener("click", async () => {
+    Sheets.setUrl($("sheet-url").value);
+    if (!Sheets.configured()) {
+      setSheetStatus("URL invalide : elle doit commencer par https://script.google.com/");
+      return;
+    }
+    setSheetStatus("Test de connexion…");
+    try {
+      await Sheets.ping();
+      setSheetStatus("Connecté. Les enregistrements partent vers le Google Sheet.");
+      UI.toast("Google Sheet connecté.");
+      await Sheets.sync();
+    } catch (err) {
+      setSheetStatus("URL enregistrée, mais le test a échoué : déployez le script (accès « Tout le monde ») puis réessayez. " + err.message);
+    }
+  });
+
+  $("sheet-test").addEventListener("click", async () => {
+    if (!Sheets.configured()) {
+      setSheetStatus("Collez d’abord l’URL /exec.");
+      return;
+    }
+    setSheetStatus("Test…");
+    try {
+      await Sheets.ping();
+      setSheetStatus("Connexion OK.");
+      UI.toast("Google Sheet joignable.");
+    } catch (err) {
+      setSheetStatus("Échec : " + err.message);
+    }
+  });
+
+  $("sheet-load").addEventListener("click", async () => {
+    if (!Sheets.configured()) {
+      setSheetStatus("Collez d’abord l’URL /exec.");
+      return;
+    }
+    setSheetStatus("Chargement…");
+    try {
+      const data = await Sheets.load();
+      if (!data.eleves || !data.eleves.length) {
+        setSheetStatus("Sheet vide. Les données de ce navigateur seront envoyées au prochain enregistrement.");
+        await Sheets.sync();
+        return;
+      }
+      Store.importJson(JSON.stringify({
+        annee: data.annee,
+        groupe: data.groupe,
+        eleves: data.eleves,
+        evaluations: data.evaluations || [],
+        replaceEleves: true
+      }));
+      ensureSel();
+      loadDraft();
+      render();
+      setSheetStatus(data.eleves.length + " élève(s) chargés depuis Google Sheet.");
+      UI.toast("Données chargées depuis Google Sheet.");
+    } catch (err) {
+      setSheetStatus("Chargement impossible : " + err.message);
+    }
   });
 
   let pending = [];
@@ -361,6 +434,7 @@
     renderGrid();
   });
 
+  refreshSheetUi();
   loadFiltres();
   ensureSel();
   if (!selCode) {
@@ -369,4 +443,23 @@
   }
   loadDraft();
   render();
+
+  if (Sheets.configured()) {
+    Sheets.load().then((data) => {
+      if (!data.eleves || !data.eleves.length) return;
+      Store.importJson(JSON.stringify({
+        annee: data.annee,
+        groupe: data.groupe,
+        eleves: data.eleves,
+        evaluations: data.evaluations || [],
+        replaceEleves: true
+      }));
+      ensureSel();
+      loadDraft();
+      render();
+      setSheetStatus(data.eleves.length + " élève(s) chargés depuis Google Sheet.");
+    }).catch((err) => {
+      setSheetStatus("Sheet configuré mais injoignable : " + err.message);
+    });
+  }
 })();

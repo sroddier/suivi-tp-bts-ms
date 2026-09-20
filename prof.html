@@ -46,7 +46,7 @@
     <section class="hero">
       <div class="kicker">Saisie</div>
       <h1>Vous cochez des indicateurs.<br>Le site fait la note.</h1>
-      <p class="lede">Les évaluations de la démo sont déjà en ligne. Ce que vous enregistrez ici reste dans <strong>ce navigateur</strong> jusqu’à export. Pour que les élèves le voient sur le site public : exporter, remplacer <code>js/promo.js</code>, double-cliquer <code>publier.bat</code>.</p>
+      <p class="lede">Les notes s’enregistrent dans ce navigateur <strong>et</strong> dans le Google Sheet une fois le script connecté. Les élèves voient le site public seulement après export <code>promo.js</code>.</p>
       <div class="toolbar">
         <button class="btn small" id="pronote">Import Pronote</button>
         <button class="btn ghost small" id="add">Ajouter un élève</button>
@@ -55,6 +55,27 @@
         <button class="btn ghost small" id="reset">Effacer le local</button>
         <button class="btn ghost small" id="logout">Déconnexion</button>
       </div>
+    </section>
+
+    <section class="card" style="margin-bottom:1.1rem">
+      <div class="kicker">Sauvegarde</div>
+      <h2>Google Sheet</h2>
+      <p class="lede">Classeur : <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1JYMdFuGzN5Hv20Oj4zGj12FU_vlTd7eFV3NdT99p6GA/edit" target="_blank" rel="noopener">BTS MS — Suivi des TP</a>. Une seule configuration : coller le script, déployer, coller l’URL <code>/exec</code>.</p>
+      <ol class="steps">
+        <li>Ouvrez le classeur → <strong>Extensions → Apps Script</strong>.</li>
+        <li>Effacez le code par défaut, collez <a href="gas/Code.gs" target="_blank" rel="noopener">gas/Code.gs</a>, enregistrez.</li>
+        <li><strong>Déployer → Nouveau déploiement → Application Web</strong> : exécuter en tant que <em>Moi</em>, accès <em>Tout le monde</em>.</li>
+        <li>Copiez l’URL qui se termine par <code>/exec</code> ci-dessous.</li>
+      </ol>
+      <label class="pick">URL de l’application web
+        <input id="sheet-url" type="url" placeholder="https://script.google.com/macros/s/…/exec" />
+      </label>
+      <div class="toolbar" style="margin-top:0.6rem">
+        <button class="btn small" id="sheet-save-url" type="button">Enregistrer l’URL</button>
+        <button class="btn ghost small" id="sheet-test" type="button">Tester</button>
+        <button class="btn ghost small" id="sheet-load" type="button">Charger depuis le Sheet</button>
+      </div>
+      <p id="sheet-status" class="muted">Non connecté — les notes restent seulement dans ce navigateur.</p>
     </section>
 
     <h2 class="section-title">Évaluer un TP</h2>
@@ -129,6 +150,7 @@
   <script src="js/promo.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/sheets.js"></script>
   <script src="js/pronote.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/auth.js"></script>
