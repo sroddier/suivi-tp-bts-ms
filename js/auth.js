@@ -25,17 +25,26 @@
     return true;
   }
 
+  function hideLock() {
+    const box = document.getElementById("lock");
+    if (!box) return;
+    box.hidden = true;
+    box.setAttribute("hidden", "");
+  }
+
   function gate(onOk) {
+    const box = document.getElementById("lock");
     if (unlocked()) {
+      hideLock();
       onOk();
       return;
     }
-    const box = document.getElementById("lock");
     const form = document.getElementById("lock-form");
     const input = document.getElementById("lock-pass");
     const msg = document.getElementById("lock-msg");
     if (!box || !form) return;
     box.hidden = false;
+    box.removeAttribute("hidden");
     input.focus();
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -46,7 +55,7 @@
         input.select();
         return;
       }
-      box.hidden = true;
+      hideLock();
       onOk();
     });
   }

@@ -180,8 +180,10 @@ footer { max-width: 1080px; margin: 0 auto; padding: 0 1.2rem 2rem; color: var(-
 
 .overlay {
   position: fixed; inset: 0; background: rgba(44,28,24,0.45);
-  display: grid; place-items: center; z-index: 40; padding: 1rem;
+  z-index: 40; padding: 1rem; place-items: center;
 }
+.overlay:not([hidden]) { display: grid; }
+.overlay[hidden] { display: none !important; }
 .overlay-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 16px;
   padding: 1.2rem 1.3rem; width: min(760px, 100%); max-height: min(90vh, 820px);
