@@ -1,5 +1,5 @@
 (function (w) {
-  const HASH = "b928f42036073b720e49d6aacff1735503076fe5f7fdc51975bd492233cd0806";
+  const HASH = "9cb4b00d01890ac6fe166589f709cd82dc6e7c7a87537b55584aa988aa5ba06f";
   const KEY = "suivi-tp-bts-ms-prof";
 
   async function sha256(text) {
