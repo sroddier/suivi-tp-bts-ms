@@ -201,8 +201,10 @@ footer { max-width: 1080px; margin: 0 auto; padding: 0 1.2rem 2rem; color: var(-
   width: 100%; min-height: 7rem; font-family: ui-monospace, Consolas, monospace; font-size: 0.82rem;
 }
 .preview-table { max-height: 320px; overflow: auto; margin: 0.7rem 0; border: 1px solid var(--line); border-radius: 10px; }
-.mode { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.6rem 0; font-size: 0.9rem; }
-.mode label { flex-direction: row; align-items: center; gap: 0.35rem; color: var(--text); }
+.mode { display: flex; gap: 0.45rem 0.8rem; flex-wrap: wrap; margin: 0 0 0.8rem; font-size: 0.9rem; }
+.mode label { flex-direction: row; align-items: center; gap: 0.35rem; color: var(--text); margin: 0; }
+.pick { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.82rem; color: var(--muted); }
+.pick select { width: 100%; }
 
 .fiche label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.65rem; }
 .fiche textarea { min-height: 5.2rem; width: 100%; resize: vertical; }

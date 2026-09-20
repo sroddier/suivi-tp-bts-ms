@@ -1,24 +1,108 @@
 (function () {
   const $ = (id) => document.getElementById(id);
+  const FILTRE_KEY = "suivi-tp-bts-ms-filtres";
   let selCode = null;
   let selTp = (window.TPS && TPS[0]) ? TPS[0].id : "DEC-PAL1";
   let draft = {};
+  let selGroupes = null;
 
   function promo() { return Store.merge(); }
 
-  function renderList() {
-    const p = promo();
-    $("eleves").innerHTML = p.eleves.map((e) => {
-      const evs = p.evaluations.filter((x) => x.code === e.code);
-      const profil = Engine.profilEleve(evs, TPS);
-      const nom = e.nom ? e.nom + " " : "";
-      return `<button type="button" data-code="${e.code}" class="${e.code === selCode ? "on" : ""}">
-        ${nom}${e.prenom} <small>${e.code} · ${Engine.fmtNote(profil.moyenne)} · ${evs.length} TP</small>
-      </button>`;
-    }).join("");
-    $("eleves").querySelectorAll("button").forEach((b) => {
-      b.addEventListener("click", () => { selCode = b.dataset.code; loadDraft(); render(); });
+  function groupeOf(e) {
+    const g = (e.groupe || "").trim();
+    return g || "Sans classe";
+  }
+
+  function allGroupes() {
+    const set = new Set();
+    promo().eleves.forEach((e) => set.add(groupeOf(e)));
+    return [...set].sort((a, b) => a.localeCompare(b, "fr"));
+  }
+
+  function loadFiltres() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(FILTRE_KEY) || "null");
+      if (Array.isArray(raw) && raw.length) selGroupes = new Set(raw);
+    } catch (_) {}
+  }
+
+  function saveFiltres() {
+    try { localStorage.setItem(FILTRE_KEY, JSON.stringify([...selGroupes])); }
+    catch (_) {}
+  }
+
+  function syncFiltres() {
+    const gs = allGroupes();
+    if (!selGroupes) {
+      selGroupes = new Set(gs);
+      return;
+    }
+    if (gs.length && ![...selGroupes].some((g) => gs.includes(g))) {
+      selGroupes = new Set(gs);
+    }
+  }
+
+  function filteredEleves() {
+    syncFiltres();
+    return promo().eleves
+      .filter((e) => selGroupes.has(groupeOf(e)))
+      .slice()
+      .sort((a, b) => {
+        const na = ((a.nom || "") + " " + (a.prenom || "")).trim();
+        const nb = ((b.nom || "") + " " + (b.prenom || "")).trim();
+        return na.localeCompare(nb, "fr");
+      });
+  }
+
+  function ensureSel() {
+    const list = filteredEleves();
+    if (!list.find((e) => e.code === selCode)) {
+      selCode = list[0] ? list[0].code : null;
+      loadDraft();
+    }
+  }
+
+  function renderPromos() {
+    const gs = allGroupes();
+    syncFiltres();
+    if (!gs.length) {
+      $("promos").innerHTML = "<span class='muted'>Aucune classe importée.</span>";
+      return;
+    }
+    $("promos").innerHTML = gs.map((g) =>
+      `<label><input type="checkbox" data-g="${g}" ${selGroupes.has(g) ? "checked" : ""}> ${g}</label>`
+    ).join("");
+    $("promos").querySelectorAll("input").forEach((box) => {
+      box.addEventListener("change", () => {
+        if (box.checked) selGroupes.add(box.dataset.g);
+        else selGroupes.delete(box.dataset.g);
+        saveFiltres();
+        ensureSel();
+        renderSelect();
+        renderGrid();
+        renderTable();
+      });
     });
+  }
+
+  function renderSelect() {
+    const list = filteredEleves();
+    const p = promo();
+    $("eleve-sel").innerHTML = list.length
+      ? list.map((e) => {
+          const evs = p.evaluations.filter((x) => x.code === e.code);
+          const label = ((e.nom ? e.nom + " " : "") + e.prenom + " — " + e.code).trim();
+          return `<option value="${e.code}" ${e.code === selCode ? "selected" : ""}>${label} (${evs.length} TP)</option>`;
+        }).join("")
+      : `<option value="">Aucun élève dans cette promo</option>`;
+    $("eleve-count").textContent = list.length
+      ? list.length + " élève" + (list.length > 1 ? "s" : "") + " dans la sélection"
+      : "Cochez au moins une promo.";
+  }
+
+  function renderList() {
+    renderPromos();
+    renderSelect();
   }
 
   function renderTps() {
@@ -104,14 +188,16 @@
       });
       UI.toast("Évaluation enregistrée sur cet ordinateur.");
       renderList();
+      renderTable();
     });
   }
 
   function renderTable() {
     const p = promo();
     const ids = ["C11", "C12", "C13", "C21", "C22", "C23", "C24"];
+    const list = filteredEleves();
     $("classe").innerHTML = `<tr><th>Élève</th>${ids.map((id) => `<th>${id}</th>`).join("")}<th>Moy.</th></tr>` +
-      p.eleves.map((e) => {
+      (list.map((e) => {
         const profil = Engine.profilEleve(p.evaluations.filter((x) => x.code === e.code), TPS);
         return `<tr>
           <td><strong>${e.nom ? e.nom + " " : ""}${e.prenom}</strong><div class="muted">${e.code}${e.groupe ? " · " + e.groupe : ""}</div></td>
@@ -121,7 +207,7 @@
           }).join("")}
           <td class="note">${Engine.fmtNote(profil.moyenne)}</td>
         </tr>`;
-      }).join("");
+      }).join("") || `<tr><td colspan="${ids.length + 2}" class="muted">Aucun élève dans les promos cochées.</td></tr>`);
   }
 
   function render() {
@@ -140,7 +226,13 @@
     const suggest = Pronote.makeCode(nom, prenom, used);
     const code = (prompt("Code élève ?", suggest) || "").toUpperCase().replace(/\s+/g, "");
     if (!code) return;
-    Store.upsertEleve({ code, nom: nom.toUpperCase(), prenom, groupe: "MS1" });
+    const groupe = (prompt("Classe / promo ?", allGroupes()[0] || "MS1") || "").trim();
+    Store.upsertEleve({ code, nom: nom.toUpperCase(), prenom, groupe: groupe || "MS1" });
+    if (groupe) {
+      syncFiltres();
+      selGroupes.add(groupe);
+      saveFiltres();
+    }
     selCode = code;
     loadDraft();
     render();
@@ -263,8 +355,18 @@
     UI.toast(chosen.length + " élève(s) importé(s) depuis Pronote.");
   });
 
-  const first = promo().eleves[0];
-  if (first) selCode = first.code;
+  $("eleve-sel").addEventListener("change", () => {
+    selCode = $("eleve-sel").value || null;
+    loadDraft();
+    renderGrid();
+  });
+
+  loadFiltres();
+  ensureSel();
+  if (!selCode) {
+    const first = filteredEleves()[0] || promo().eleves[0];
+    if (first) selCode = first.code;
+  }
   loadDraft();
   render();
 })();
