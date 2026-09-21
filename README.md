@@ -39,11 +39,10 @@ Colonnes reconnues : Nom, Prénom, Classe / Division, éventuellement Identifian
 ## Publier une promo réelle
 
 1. Importer Pronote (ou ajouter les élèves à la main).
-2. Noter chaque TP (0 / 1 / 2 / 3 / non observé).
-3. **Exporter promo.js** → remplacer `js/promo.js`.
-4. Double-cliquer `publier.bat`.
+2. Noter chaque TP (0 / 1 / 2 / 3 / non observé) puis **Enregistrer**.
+3. La page élève relit le Google Sheet : le code saisi affiche les notes du classeur.
 
-Les saisies restent dans le navigateur du professeur tant qu’elles ne sont pas exportées. Sur le site public, préférez des **codes** plutôt que les noms complets.
+`js/promo.js` reste la démo publique, utilisée seulement si le classeur est vide ou injoignable. Sur le site public, préférez des **codes** plutôt que les noms complets.
 
 ## Google Sheet
 
@@ -53,7 +52,7 @@ Classeur : [BTS MS — Suivi des TP](https://docs.google.com/spreadsheets/d/1JYM
 2. Déployer → Application Web (Moi / Tout le monde).
 3. Coller l’URL `/exec` dans l’espace professeur.
 
-Onglets : `Eleves`, `Evaluations`, `Meta`. Chaque clic sur **Enregistrer** envoie le jeu complet.
+Onglets : `Eleves`, `Evaluations`, `Meta`. Chaque clic sur **Enregistrer** envoie le jeu complet, puis relit le classeur : la ligne d’état affiche **Reçu** ou **Échec**.
 
 ## Moteur
 

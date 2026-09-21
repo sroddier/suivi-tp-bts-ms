@@ -10,8 +10,9 @@
     catch { return null; }
   }
 
-  function saveLocal(data) {
+  function saveLocal(data, opts) {
     localStorage.setItem(KEY, JSON.stringify(data));
+    if (opts && opts.skipSync) return;
     if (w.Sheets && typeof w.Sheets.sync === "function") w.Sheets.sync();
   }
 
@@ -100,13 +101,13 @@
     return JSON.stringify(merge(), null, 2);
   }
 
-  function importJson(text) {
+  function importJson(text, opts) {
     let t = String(text || "").replace(/^\uFEFF/, "").trim();
     t = t.replace(/^window\.PROMO\s*=\s*/, "").replace(/;\s*$/, "");
     const data = JSON.parse(t);
     if (!data.eleves || !data.evaluations) throw new Error("Fichier incomplet");
     if (data.eleves.length) data.replaceEleves = true;
-    saveLocal(data);
+    saveLocal(data, opts);
   }
 
   function resetLocal() {

@@ -171,6 +171,9 @@ ol.steps { padding-left: 1.2rem; color: var(--text); }
 ol.steps li { margin: 0.35rem 0; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
 
+#sheet-status.ok { color: var(--ok); font-weight: 600; }
+#sheet-status.bad { color: var(--hot); font-weight: 600; }
+
 #toast {
   position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
   background: #f4e4dc; color: var(--accent); border: 1px solid #e0c4b8;

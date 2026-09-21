@@ -165,7 +165,7 @@
         <button class="btn" id="save">Enregistrer</button>
         <button class="btn ghost" id="copy">Dupliquer vers…</button>
       </div>
-      <p class="muted">Enregistrement local, puis Google Sheet si l’URL /exec est configurée. Pour le site élève : Exporter promo.js.</p>
+      <p class="muted">Enregistrement sur cet ordinateur, puis envoi au Google Sheet. La page élève relit le classeur.</p>
     `;
     $("form").querySelectorAll(".pills").forEach((p) => {
       p.querySelectorAll("button").forEach((b) => {
@@ -183,14 +183,22 @@
     $("save").addEventListener("click", () => {
       draft.date = $("ev-date").value;
       draft.commentaire = $("ev-com").value;
-      Store.setEval({
-        code: selCode, tp: selTp, date: draft.date,
-        scores: draft.scores, commentaire: draft.commentaire
-      });
-      UI.toast(Sheets.configured() ? "Enregistré ici et envoyé vers Google Sheet." : "Enregistré sur cet ordinateur (Sheet non connecté).");
+      const ev = {
+        code: selCode,
+        tp: selTp,
+        date: draft.date,
+        scores: Object.assign({}, draft.scores),
+        commentaire: draft.commentaire
+      };
+      Store.setEval(ev);
       renderList();
       renderTable();
-      if (Sheets.configured()) Sheets.sync();
+      if (!Sheets.configured()) {
+        UI.toast("Enregistré sur cet ordinateur.");
+        return;
+      }
+      setSheetStatus("Envoi vers Google Sheet…");
+      Sheets.sync(ev);
     });
   }
 
@@ -273,9 +281,23 @@
     location.reload();
   });
 
-  function setSheetStatus(text) {
-    $("sheet-status").textContent = text;
+  function setSheetStatus(text, kind) {
+    const el = $("sheet-status");
+    el.textContent = text;
+    el.classList.remove("ok", "bad");
+    if (kind) el.classList.add(kind);
   }
+
+  Sheets.onSyncResult((res) => {
+    if (!res || res.skipped) return;
+    if (res.ok) {
+      setSheetStatus("Reçu par Google Sheet.", "ok");
+      UI.toast("Reçu par Google Sheet.");
+    } else {
+      setSheetStatus("Échec : " + (res.reason || "le classeur n’a pas confirmé l’enregistrement."), "bad");
+      UI.toast("Échec : le Google Sheet n’a pas confirmé.");
+    }
+  });
 
   function refreshSheetUi() {
     $("sheet-url").value = Sheets.url();
@@ -292,7 +314,7 @@
     setSheetStatus("Test de connexion…");
     try {
       await Sheets.ping();
-      setSheetStatus("Connecté. Les enregistrements partent vers le Google Sheet.");
+      setSheetStatus("Connecté. Envoi vers Google Sheet…");
       UI.toast("Google Sheet connecté.");
       await Sheets.sync();
     } catch (err) {
@@ -324,7 +346,7 @@
     try {
       const data = await Sheets.load();
       if (!data.eleves || !data.eleves.length) {
-        setSheetStatus("Sheet vide. Les données de ce navigateur seront envoyées au prochain enregistrement.");
+        setSheetStatus("Sheet vide. Envoi des données de cet ordinateur…");
         await Sheets.sync();
         return;
       }
@@ -334,7 +356,7 @@
         eleves: data.eleves,
         evaluations: data.evaluations || [],
         replaceEleves: true
-      }));
+      }), { skipSync: true });
       ensureSel();
       loadDraft();
       render();
@@ -454,7 +476,7 @@
         eleves: data.eleves,
         evaluations: data.evaluations || [],
         replaceEleves: true
-      }));
+      }), { skipSync: true });
       ensureSel();
       loadDraft();
       render();

@@ -4,26 +4,87 @@
   const start = (params.get("code") || hash || "").toUpperCase();
 
   const $ = (id) => document.getElementById(id);
-  const data = () => Store.merge();
+  const DEMO = ["LEA24", "YAN24", "INE24", "KAR24"];
+  let remote = null;
+  let sheetState = "loading";
+
+  function data() {
+    if (remote && remote.eleves && remote.eleves.length) return remote;
+    return Store.merge();
+  }
 
   function findEleve(code) {
     const c = (code || "").trim().toUpperCase();
-    return data().eleves.find((e) => e.code.toUpperCase() === c);
+    return data().eleves.find((e) => String(e.code).toUpperCase() === c);
   }
+
+  function setNotice() {
+    const notice = $("gate-notice");
+    const demo = $("demo-codes");
+    if (!notice) return;
+    if (sheetState === "loading") {
+      notice.innerHTML = "<strong>Chargement des notes…</strong> Lecture du classeur de la classe.";
+      return;
+    }
+    if (sheetState === "ok") {
+      const hasDemo = DEMO.some((c) => remote.eleves.some((e) => String(e.code).toUpperCase() === c));
+      if (demo) demo.hidden = !hasDemo;
+      notice.innerHTML = "<strong>Saisissez votre code.</strong> Les notes affichées sont celles enregistrées par l’enseignant.";
+      return;
+    }
+    if (demo) demo.hidden = false;
+    if (sheetState === "error") {
+      notice.innerHTML = "<strong>Démo publique.</strong> Le classeur est injoignable pour le moment. Les prénoms ci-dessous sont fictifs.";
+      return;
+    }
+    notice.innerHTML = "<strong>Démo publique.</strong> Aucun compte. Les prénoms ci-dessous sont fictifs, pour montrer le fonctionnement. En classe, vous recevez un code personnel.";
+  }
+
+  function loadRemote() {
+    sheetState = "loading";
+    setNotice();
+    if (!window.Sheets || !Sheets.configured()) {
+      sheetState = "error";
+      setNotice();
+      return Promise.resolve();
+    }
+    return Sheets.load().then((loaded) => {
+      if (loaded && Array.isArray(loaded.eleves) && loaded.eleves.length) {
+        remote = {
+          annee: loaded.annee || "",
+          groupe: loaded.groupe || "",
+          eleves: loaded.eleves,
+          evaluations: loaded.evaluations || []
+        };
+        sheetState = "ok";
+      } else {
+        remote = null;
+        sheetState = "empty";
+      }
+      setNotice();
+    }).catch(() => {
+      remote = null;
+      sheetState = "error";
+      setNotice();
+    });
+  }
+
+  const ready = loadRemote();
 
   function renderLogin() {
     $("dash").hidden = true;
     $("gate").hidden = false;
   }
 
-  function openEleve(code) {
+  async function openEleve(code) {
+    await ready;
     const el = findEleve(code);
     if (!el) {
-      UI.toast("Code inconnu. Exemple : LEA24");
+      UI.toast(sheetState === "ok" ? "Code inconnu." : "Code inconnu. Exemple : LEA24");
       return;
     }
     const promo = data();
-    const evs = promo.evaluations.filter((e) => e.code === el.code);
+    const evs = promo.evaluations.filter((e) => String(e.code).toUpperCase() === String(el.code).toUpperCase());
     const profil = Engine.profilEleve(evs, TPS);
     $("gate").hidden = true;
     $("dash").hidden = false;
